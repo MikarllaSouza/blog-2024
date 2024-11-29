@@ -8,7 +8,7 @@ from .models import Categoria, Noticia
 
 
 # Create your views here.
-@login_required
+@login_required(login_url='usuarios:login')
 def inicio_gerencia(request):
     return render(request, 'gerencia/inicio.html')
 
@@ -48,7 +48,7 @@ def cadastrar_noticia(request):
     contexto = {'form': form}
     return render(request, 'gerencia/cadastro_noticia.html', contexto)
 
-@login_required
+@login_required(login_url='usuarios:login')
 def editar_noticia(request, id):
     noticia = Noticia.objects.get(id=id)
     if request.method == 'POST':
@@ -93,7 +93,7 @@ def index(request):
     }
     return render(request, 'gerencia/index.html', contexto)
 
-@login_required
+@login_required(login_url='usuarios:login')
 def categoria_list(request):
     search_term = request.GET.get('search', '')
     qs = Categoria.objects.all()
@@ -114,7 +114,7 @@ def categoria_list(request):
     return render(request, 'gerencia/categoria_list.html', context)
 
 
-@login_required
+@login_required(login_url='usuarios:login')
 def categoria_create(request):
     if request.method == 'POST':
         form = CategoriaForm(request.POST)
@@ -127,7 +127,7 @@ def categoria_create(request):
     return render(request, 'gerencia/categoria_form.html', {'form': form})
 
 
-@login_required
+@login_required(login_url='usuarios:login')
 def categoria_update(request, pk):
     categoria = get_object_or_404(Categoria, pk=pk)
     
@@ -142,7 +142,7 @@ def categoria_update(request, pk):
     return render(request, 'gerencia/categoria_form.html', {'form': form})
 
 
-@login_required
+@login_required(login_url='usuarios:login')
 def categoria_delete(request, pk):
     categoria = get_object_or_404(Categoria, pk=pk)
     
