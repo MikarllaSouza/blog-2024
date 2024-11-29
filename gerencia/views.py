@@ -1,8 +1,11 @@
-from django.shortcuts import render,redirect
-from .forms import NoticiaForm, NoticiaFilterForm
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
-from .models import Noticia, Categoria
+from django.core.paginator import Paginator
+from django.db.models.functions import Lower
+from django.shortcuts import get_object_or_404, redirect, render
+
+from .forms import CategoriaForm, NoticiaFilterForm, NoticiaForm
+from .models import Categoria, Noticia
+
 
 # Create your views here.
 @login_required
@@ -89,3 +92,62 @@ def index(request):
         'search_query': search_query,
     }
     return render(request, 'gerencia/index.html', contexto)
+
+@login_required
+def categoria_list(request):
+    search_term = request.GET.get('search', '')
+    qs = Categoria.objects.all()
+    
+    if search_term:
+        qs = qs.filter(nome__icontains=search_term)
+    
+    qs = qs.annotate(nome_lower=Lower('nome')).order_by('nome_lower')
+
+    paginator = Paginator(qs, 10)  # Paginação
+    page_number = request.GET.get('page')
+    categorias = paginator.get_page(page_number)
+    
+    context = {
+        'categorias': categorias,
+        'action': request.get_full_path(),
+    }
+    return render(request, 'gerencia/categoria_list.html', context)
+
+
+@login_required
+def categoria_create(request):
+    if request.method == 'POST':
+        form = CategoriaForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('gerencia:categoria_list')
+    else:
+        form = CategoriaForm()
+
+    return render(request, 'gerencia/categoria_form.html', {'form': form})
+
+
+@login_required
+def categoria_update(request, pk):
+    categoria = get_object_or_404(Categoria, pk=pk)
+    
+    if request.method == 'POST':
+        form = CategoriaForm(request.POST, instance=categoria)
+        if form.is_valid():
+            form.save()
+            return redirect('gerencia:categoria_list')
+    else:
+        form = CategoriaForm(instance=categoria)
+
+    return render(request, 'gerencia/categoria_form.html', {'form': form})
+
+
+@login_required
+def categoria_delete(request, pk):
+    categoria = get_object_or_404(Categoria, pk=pk)
+    
+    if request.method == 'POST':
+        categoria.delete()
+        return redirect('gerencia:categoria_list')
+
+    return render(request, 'gerencia/categoria_confirm_delete.html', {'categoria': categoria})

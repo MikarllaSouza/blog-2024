@@ -1,0 +1,14 @@
+{% extends 'base_gerencia.html' %}
+
+{% block main %}
+
+<h1>Excluir Categoria</h1>
+<p>Tem certeza que deseja excluir a categoria "{{ object.nome }}"?</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Confirmar</button>
+    <a href="{% url 'gerencia:categoria_list' %}" class="btn btn-secondary">Cancelar</a>
+</form>
+
+{% endblock %}

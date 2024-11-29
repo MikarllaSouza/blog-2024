@@ -1,5 +1,7 @@
 from django import forms
+
 from .models import Noticia
+
 
 class NoticiaForm(forms.ModelForm):
     
@@ -18,8 +20,11 @@ class NoticiaForm(forms.ModelForm):
 
 
 from django import forms
-from .models import Categoria
+
 from usuarios.models import UserBlog  # Importe o modelo de usuário personalizado
+
+from .models import Categoria
+
 
 class NoticiaFilterForm(forms.Form):
     titulo = forms.CharField(
@@ -45,3 +50,20 @@ class NoticiaFilterForm(forms.Form):
         widget=forms.Select(attrs={'class': 'form-control'})
     )
   
+class CategoriaForm(forms.ModelForm):
+    nome = forms.CharField(max_length=100, required=True)
+
+    class Meta:
+        model = Categoria
+        fields = ['nome']
+        widgets = {
+            'nome': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+    
+    def clean_nome(self):
+        nome = self.cleaned_data['nome']
+        
+        categoria = Categoria.objects.filter(nome=nome).exclude(id=self.instance.id).exists()
+        if categoria:
+            raise forms.ValidationError('Esta categoria já existe')
+        return nome

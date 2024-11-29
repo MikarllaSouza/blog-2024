@@ -1,12 +1,17 @@
 from django.urls import path
-from .views import inicio_gerencia, listagem_noticia,cadastrar_noticia,editar_noticia
+
+from . import views
 
 app_name = 'gerencia'
 
 urlpatterns = [
-    path('', inicio_gerencia, name='gerencia_inicial'),
-    path('noticias/', listagem_noticia, name='listagem_noticia'),
-    path('noticias/cadastro', cadastrar_noticia, name='cadastro_noticia'),
-    path('noticias/editar/<int:id>', editar_noticia, name='editar_noticia')
+    path('', views.inicio_gerencia, name='gerencia_inicial'),
+    path('noticias/', views.listagem_noticia, name='listagem_noticia'),
+    path('noticias/cadastro', views.cadastrar_noticia, name='cadastro_noticia'),
+    path('noticias/editar/<int:id>', views.editar_noticia, name='editar_noticia'),
     # Add your URL patterns here
+    path('categorias/', views.categoria_list, name='categoria_list'),
+    path('categoria/criar/', views.categoria_create, name='categoria_create'),
+    path('categoria/editar/<int:pk>/', views.categoria_update, name='categoria_update'),
+    path('categoria/excluir/<int:pk>/', views.categoria_delete, name='categoria_delete'),
 ]

@@ -70,7 +70,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Entidades:</h6>
                         <a class="collapse-item" href="{% url 'gerencia:listagem_noticia' %}">Notícias</a>
-                        <a class="collapse-item" href="utilities-animation.html">Categoria de Notícias</a>
+                        <a class="collapse-item" href="{% url 'gerencia:categoria_list' %}">Categoria de Notícias</a>
                         <a class="collapse-item" href="{% url 'usuarios:lista_usuarios'  %}">Usuários</a>
                     </div>
                 </div>
@@ -112,13 +112,16 @@
                     </button>
 
                     <!-- Topbar Search -->
-                    <form
+                    <form 
+                        method="get" 
+                        action= "{{ action }}"
                         class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
                             <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                                aria-label="Search" aria-describedby="basic-addon2">
+                                aria-label="Search" aria-describedby="basic-addon2"
+                                name="search">
                             <div class="input-group-append">
-                                <button class="btn btn-primary" type="button">
+                                <button class="btn btn-primary" type="submit">
                                     <i class="fas fa-search fa-sm"></i>
                                 </button>
                             </div>
