@@ -26,47 +26,47 @@
     <div class="d-flex justify-content-between align-items-center">
         <div>
             <span>
-                Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }} 
-                (Total de {{ page_obj.paginator.count }} categorias)
+                Página {{ categorias.number }} de {{ categorias.paginator.num_pages }} 
+                (Total de {{ categorias.paginator.count }} categorias)
             </span>
         </div>
 
         <div class="pagination">
             <nav aria-label="Navegação de página">
                 <ul class="pagination">
-                    {% if page_obj.has_previous %}
+                    {% if categorias.has_previous %}
                     <li class="page-item">
                         <a class="page-link" href="?page=1" aria-label="Primeira">
                             <span aria-hidden="true">&laquo;&laquo;</span>
                         </a>
                     </li>
                     <li class="page-item">
-                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Anterior">
+                        <a class="page-link" href="?page={{ categorias.previous_page_number }}" aria-label="Anterior">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
                     {% endif %}
 
-                    {% for num in page_obj.paginator.page_range %}
-                        {% if page_obj.number == num %}
+                    {% for num in categorias.paginator.page_range %}
+                        {% if categorias.number == num %}
                             <li class="page-item active">
                                 <span class="page-link">{{ num }}</span>
                             </li>
-                        {% elif num > page_obj.number|add:"-3" and num < page_obj.number|add:"3" %}
+                        {% elif num > categorias.number|add:"-3" and num < categorias.number|add:"3" %}
                             <li class="page-item">
                                 <a class="page-link" href="?page={{ num }}">{{ num }}</a>
                             </li>
                         {% endif %}
                     {% endfor %}
 
-                    {% if page_obj.has_next %}
+                    {% if categorias.has_next %}
                     <li class="page-item">
-                        <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Próximo">
+                        <a class="page-link" href="?page={{ categorias.next_page_number }}" aria-label="Próximo">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
                     <li class="page-item">
-                        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Última">
+                        <a class="page-link" href="?page={{ categorias.paginator.num_pages }}" aria-label="Última">
                             <span aria-hidden="true">&raquo;&raquo;</span>
                         </a>
                     </li>
